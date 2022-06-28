@@ -9,36 +9,65 @@ import UIKit
 
 class QuotesViewController: UIViewController {
     
-    var character: [Character]?
+    var characterList: [Character]?
+    var charactar: Character?
+    var quotesList: [Quote]?
+    var quote: Quote?
     
     @IBOutlet weak var imageLabel: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var quoteLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchData()
         setupNavigationBar()
+        
+        fetchQuote(from: breakingURLS.quoteURL.rawValue)
     }
     
     
     @IBAction func fetchButton(_ sender: Any) {
-        fetchData()
+        fetchQuote(from: breakingURLS.quoteURL.rawValue)
     }
     
     
-    func fetchData() {
+    func fetchQuote(from url: String?) {
+//        NetworkManager.shared.fetchCharacter(from: breakingURLS.characterURL.rawValue) { character in
+//            self.characterList = character
+//            guard let charArray = self.characterList else { print("no"); return}
+//
+//
+//            DispatchQueue.main.async {
+//                for i in charArray {
+//                    if i.name == self.quote?.author {
+//                        print("hello")
+//                        print(i.name)
+//                        print(i.img ?? "error")
+//                    }
+//                }
+//            }
+//
+//        }
         
-        NetworkManager.shared.fetchCharacter(from: breakingURLS.characterURL.rawValue) { character in
-            self.character = character
-     //       guard let imageData = ImageManager.shared.fetchImage(from: self.character?.first?.img) else { return }
+        NetworkManager.shared.fetchQuote(from: url) { quote in
+            self.quotesList = quote
+            guard let characterQuote = self.quotesList?.randomElement() else { return }
+            self.quote = characterQuote
             
             DispatchQueue.main.async {
-                self.nameLabel.text = self.character?.first?.name
-        //        self.imageLabel.image = UIImage(data: imageData)
+                self.quoteLabel.text =
+                """
+                "\(self.quote?.quote ?? "error")"
+                © \(self.quote?.author ?? "error")
+                """
             }
         }
+        
+        
     }
-    
+}
+
+
+extension QuotesViewController {
     // Setup navigation bar
     private func setupNavigationBar() {
         
@@ -58,5 +87,4 @@ class QuotesViewController: UIViewController {
         }
         
     }
-    
 }

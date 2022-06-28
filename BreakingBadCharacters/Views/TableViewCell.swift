@@ -10,7 +10,7 @@ import UIKit
 class TableViewCell: UITableViewCell {
     
     
-     var someImage: UIImage?
+    var someImage: UIImage?
     
     //MARK: - IBOutlets
     @IBOutlet weak var nameLabel: UILabel!

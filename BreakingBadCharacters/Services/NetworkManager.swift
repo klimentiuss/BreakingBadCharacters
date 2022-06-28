@@ -24,7 +24,6 @@ class NetworkManager {
                 print(error?.localizedDescription ?? "No error description")
                 return
             }
-            
             do {
                 let character = try JSONDecoder().decode([Character].self, from: data)
                 
@@ -35,9 +34,30 @@ class NetworkManager {
                 print(error)
             }
         }.resume()
-        
     }
     
+    func fetchQuote(from url: String?, with complition: @escaping ([Quote]) -> Void) {
+        guard let stringURL = url else { return }
+        guard let url = URL(string: stringURL) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data else {
+                print(error?.localizedDescription ?? "No error description")
+                return
+            }
+            
+            do {
+                let quote = try JSONDecoder().decode([Quote].self, from: data)
+                
+                DispatchQueue.main.async {
+                    complition(quote)
+                }
+                
+            } catch let error {
+                print(error)
+            }
+        }.resume()
+    }
 }
 
 
@@ -65,13 +85,4 @@ class ImageManager {
             }
         }
     }
-    
-    
-    
-    //    func fetchImage(from url: String?) -> Data? {
-    //        guard let stringURL = url else { return nil }
-    //        guard let url = URL(string: stringURL) else { return nil }
-    //        return try? Data(contentsOf: url)
-    //    }
-    //
 }

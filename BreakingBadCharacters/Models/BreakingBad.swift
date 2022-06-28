@@ -6,7 +6,7 @@
 //
 
 
-struct Character: Codable {
+struct Character: Codable  {
     
     let char_id: Int?
     let name: String
@@ -31,6 +31,17 @@ struct Character: Codable {
     }
 }
 
+
+struct Quote: Codable {
+    let quote: String?
+    let author: String?
+    let series: String?
+}
+
+
 enum breakingURLS: String {
     case characterURL = "https://breakingbadapi.com/api/characters"
+    case quoteURL = "https://breakingbadapi.com/api/quotes"
 }
+
+
